@@ -6,12 +6,26 @@
 #include "Character/Chicken/CkrunCharacterChicken.h"
 #include "CkrunPlayerChicken.generated.h"
 
+class UCameraComponent;
+class USpringArmComponent;
 /**
  * 
  */
+
+
 UCLASS()
 class CHICKENRUN_API ACkrunPlayerChicken : public ACkrunCharacterChicken
 {
 	GENERATED_BODY()
+
+public:
+	ACkrunPlayerChicken();
+protected:
+
+	UPROPERTY(EditDefaultsOnly, Category="Components")
+	UCameraComponent* Camera;
+
+	UPROPERTY(EditDefaultsOnly, Category="Components")
+	USpringArmComponent* CameraBoom;
 	
 };
