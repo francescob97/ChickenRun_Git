@@ -20,6 +20,12 @@ void ACkrunPlayerController::BeginPlay()
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 	check(Subsystem);
 	Subsystem->AddMappingContext(CkrunContext, 0);
+
+
+	if (APawn* ControlledPawn = GetPawn<APawn>())
+	{
+		PlayerCharacter = Cast<ACkrunCharacterChicken>(ControlledPawn);
+	}
  
 	/*bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
@@ -39,6 +45,7 @@ void ACkrunPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACkrunPlayerController::Move);
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACkrunPlayerController::Look);
 	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACkrunPlayerController::Jump);
+	EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ACkrunPlayerController::Crouch);
 	
 }
 
@@ -51,10 +58,10 @@ void ACkrunPlayerController::Move(const FInputActionValue& InputActionValue)
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-	if (APawn* ControlledPawn = GetPawn<APawn>())
+	if (PlayerCharacter)
 	{
-		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
-		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
+		PlayerCharacter->AddMovementInput(ForwardDirection, InputAxisVector.Y);
+		PlayerCharacter->AddMovementInput(RightDirection, InputAxisVector.X);
 	}
 }
 
@@ -62,17 +69,32 @@ void ACkrunPlayerController::Look(const FInputActionValue& Value)
 {
 	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 
-	if (APawn* ControlledPawn = GetPawn<APawn>())
+	if (PlayerCharacter)
 	{
-		ControlledPawn->AddControllerPitchInput(-LookAxisVector.Y);
-		ControlledPawn->AddControllerYawInput(LookAxisVector.X);
+		PlayerCharacter->AddControllerPitchInput(-LookAxisVector.Y);
+		PlayerCharacter->AddControllerYawInput(LookAxisVector.X);
 	}	
 }
 
 void ACkrunPlayerController::Jump()
 {
-	if (APawn* ControlledPawn = GetPawn<APawn>())
+	if (PlayerCharacter)
 	{
-		Cast<ACkrunCharacterChicken>(ControlledPawn)->Jump();
+		PlayerCharacter->Jump();
+	}	
+}
+
+void ACkrunPlayerController::Crouch()
+{
+	if (PlayerCharacter)
+	{			
+		if(PlayerCharacter->bIsCrouched)
+		{
+			PlayerCharacter->UnCrouch();
+		}
+		else
+		{
+			PlayerCharacter->Crouch();
+		}		
 	}	
 }

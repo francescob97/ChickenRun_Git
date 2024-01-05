@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "CkrunPlayerController.generated.h"
 
+class ACkrunCharacterChicken;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
@@ -38,7 +39,13 @@ private:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> JumpAction;
 
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> CrouchAction;
+
+	ACkrunCharacterChicken* PlayerCharacter;
+
 	void Move(const FInputActionValue& InputActionValue);
 	void Look(const FInputActionValue& InputActionValue);
 	void Jump();
+	void Crouch();
 };
