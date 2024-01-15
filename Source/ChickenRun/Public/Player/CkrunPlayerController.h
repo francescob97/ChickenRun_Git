@@ -27,6 +27,10 @@ protected:
 	virtual void SetupInputComponent() override;
 
 private:
+	/*
+	 * Inputs
+	 */
+	
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputMappingContext> CkrunContext;
 
@@ -42,10 +46,36 @@ private:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> CrouchAction;
 
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> ToggleInventoryhAction;
+	
 	ACkrunCharacterChicken* PlayerCharacter;
 
+	UPROPERTY(EditAnywhere, Category="Input")
+	float LookSensitivity = 1.f;
+
+	/*
+	 *  Inventory 
+	 */		
+
+	UPROPERTY(EditAnywhere, Category="Inventory")
+	TSubclassOf<UUserWidget> InventoryMenuHUDClass;
+
+	UPROPERTY()
+	TObjectPtr<UUserWidget> InventoryMenuHUD;
+	
+	UPROPERTY(EditAnywhere, Category="Inventory")
+	int32 InventorySlots;
+	
+		
 	void Move(const FInputActionValue& InputActionValue);
 	void Look(const FInputActionValue& InputActionValue);
 	void Jump();
 	void Crouch();
+	void ToggleInventory();
+
+public:
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE int32 GetInventorySlots() const {return InventorySlots; };
+	
 };

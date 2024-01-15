@@ -5,6 +5,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Blueprint/UserWidget.h"
 #include "Character/Chicken/CkrunCharacterChicken.h"
 
 ACkrunPlayerController::ACkrunPlayerController()
@@ -34,6 +35,10 @@ void ACkrunPlayerController::BeginPlay()
 	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	InputModeData.SetHideCursorDuringCapture(false);
 	SetInputMode(InputModeData);*/
+
+	InventoryMenuHUD = CreateWidget<UUserWidget>(this, InventoryMenuHUDClass);
+	InventoryMenuHUD->SetVisibility(ESlateVisibility::Collapsed);
+	InventoryMenuHUD->AddToViewport();
 }
 
 void ACkrunPlayerController::SetupInputComponent()
@@ -46,6 +51,7 @@ void ACkrunPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACkrunPlayerController::Look);
 	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACkrunPlayerController::Jump);
 	EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ACkrunPlayerController::Crouch);
+	EnhancedInputComponent->BindAction(ToggleInventoryhAction, ETriggerEvent::Triggered, this, &ACkrunPlayerController::ToggleInventory);
 	
 }
 
@@ -76,7 +82,7 @@ void ACkrunPlayerController::Look(const FInputActionValue& Value)
 	}	
 }
 
-void ACkrunPlayerController::Jump()
+void ACkrunPlayerController::Jump() 
 {
 	if (PlayerCharacter)
 	{
@@ -97,4 +103,34 @@ void ACkrunPlayerController::Crouch()
 			PlayerCharacter->Crouch();
 		}		
 	}	
+}
+
+void ACkrunPlayerController::ToggleInventory()
+{
+	const bool bIsInventoryCollapsed = InventoryMenuHUD->GetVisibility() == ESlateVisibility::Collapsed;
+
+	const TSharedPtr<SWidget> InventoryMenuWidget = InventoryMenuHUD->TakeWidget();	
+	
+	if(bIsInventoryCollapsed)
+	{
+		SetIgnoreLookInput(true);
+		SetShowMouseCursor(true);
+		InventoryMenuHUD->SetVisibility(ESlateVisibility::SelfHitTestInvisible);	
+
+		FInputModeGameAndUI InputModeGameAndUI;
+		InputModeGameAndUI.SetWidgetToFocus(InventoryMenuWidget);
+		InputModeGameAndUI.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		InputModeGameAndUI.SetHideCursorDuringCapture(true);
+		SetInputMode(InputModeGameAndUI);	
+	}
+	else
+	{
+		ResetIgnoreLookInput();
+		SetShowMouseCursor(false);
+		InventoryMenuHUD->SetVisibility(ESlateVisibility::Collapsed);	
+
+		const FInputModeGameOnly InputModeGameOnly;		
+		SetInputMode(InputModeGameOnly);
+	}
+	
 }
