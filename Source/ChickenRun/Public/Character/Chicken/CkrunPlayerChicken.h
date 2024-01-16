@@ -23,9 +23,13 @@ public:
 protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="Components")
-	UCameraComponent* Camera;
+	TObjectPtr<UCameraComponent> Camera;
 
 	UPROPERTY(EditDefaultsOnly, Category="Components")
-	USpringArmComponent* CameraBoom;
+	TObjectPtr<USpringArmComponent> CameraBoom;
+
+public:
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE UCameraComponent* GetCameraComponent() const {return Camera; };
 	
 };
