@@ -48,7 +48,11 @@ private:
 
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> ToggleInventoryhAction;
+
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> PickupAction;
 	
+	UPROPERTY()
 	ACkrunCharacterChicken* PlayerCharacter;
 
 	UPROPERTY(EditAnywhere, Category="Input")
@@ -73,9 +77,12 @@ private:
 	void Jump();
 	void Crouch();
 	void ToggleInventory();
+	void PickUp();
 
 public:
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE int32 GetInventorySlots() const {return InventorySlots; };
-	
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE UUserWidget* GetInventoryWidget() const {return InventoryMenuHUD; };
 };

@@ -22,14 +22,10 @@ public:
 	ACkrunPlayerChicken();
 protected:
 
-	UPROPERTY(EditDefaultsOnly, Category="Components")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UCameraComponent> Camera;
 
 	UPROPERTY(EditDefaultsOnly, Category="Components")
 	TObjectPtr<USpringArmComponent> CameraBoom;
-
-public:
-	UFUNCTION(BlueprintPure)
-	FORCEINLINE UCameraComponent* GetCameraComponent() const {return Camera; };
 	
 };

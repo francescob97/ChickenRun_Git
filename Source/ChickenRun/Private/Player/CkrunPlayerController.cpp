@@ -52,6 +52,7 @@ void ACkrunPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACkrunPlayerController::Jump);
 	EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ACkrunPlayerController::Crouch);
 	EnhancedInputComponent->BindAction(ToggleInventoryhAction, ETriggerEvent::Triggered, this, &ACkrunPlayerController::ToggleInventory);
+	EnhancedInputComponent->BindAction(PickupAction, ETriggerEvent::Triggered, this, &ACkrunPlayerController::PickUp);
 	
 }
 
@@ -132,5 +133,10 @@ void ACkrunPlayerController::ToggleInventory()
 		const FInputModeGameOnly InputModeGameOnly;		
 		SetInputMode(InputModeGameOnly);
 	}
+	
+}
+
+void ACkrunPlayerController::PickUp()
+{
 	
 }
