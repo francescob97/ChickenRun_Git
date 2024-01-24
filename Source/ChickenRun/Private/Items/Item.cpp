@@ -9,6 +9,9 @@ AItem::AItem()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	SetRootComponent(RootComponent);
+	
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMeshComponent"));
 	ItemMesh->SetGenerateOverlapEvents(false);
 	ItemMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
@@ -17,11 +20,11 @@ AItem::AItem()
 	ItemMesh->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 	ItemMesh->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
 	ItemMesh->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
-	ItemMesh->SetCollisionResponseToChannel(ECC_PhysicsBody, ECR_Block);
-	RootComponent = ItemMesh;
+	ItemMesh->SetCollisionResponseToChannel(ECC_PhysicsBody, ECR_Block);	
+	ItemMesh->SetupAttachment(RootComponent);
 
 	SphereTrigger = CreateDefaultSubobject<USphereComponent>(TEXT("SphereTrigger"));
-	SphereTrigger->SetupAttachment(GetRootComponent());
+	SphereTrigger->SetupAttachment(RootComponent);
 	SphereTrigger->SetGenerateOverlapEvents(false);
 	SphereTrigger->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SphereTrigger->SetCollisionObjectType(ECC_WorldDynamic);
