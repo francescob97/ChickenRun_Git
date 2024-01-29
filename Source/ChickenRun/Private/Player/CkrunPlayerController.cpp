@@ -7,6 +7,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Blueprint/UserWidget.h"
 #include "Character/Chicken/CkrunCharacterChicken.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ACkrunPlayerController::ACkrunPlayerController()
 {
@@ -88,12 +89,13 @@ void ACkrunPlayerController::Jump()
 	if (PlayerCharacter)
 	{
 		PlayerCharacter->Jump();
+		PlayerCharacter->UnCrouch();
 	}	
 }
 
 void ACkrunPlayerController::Crouch()
 {
-	if (PlayerCharacter)
+	if (PlayerCharacter && !PlayerCharacter->GetCharacterMovement()->IsFalling())
 	{			
 		if(PlayerCharacter->bIsCrouched)
 		{
