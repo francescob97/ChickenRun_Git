@@ -7,10 +7,6 @@ ACkrunCharacterBase::ACkrunCharacterBase()
 { 	
 	PrimaryActorTick.bCanEverTick = false;
 
-	HoldItem = CreateDefaultSubobject<USkeletalMeshComponent>("Hold Item");
-	HoldItem->SetupAttachment(GetMesh(), FName("ItemHandSocket"));
-	HoldItem->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
 }
 
 void ACkrunCharacterBase::BeginPlay()

@@ -15,9 +15,6 @@ public:
 	ACkrunCharacterBase();
 
 protected:	
-	virtual void BeginPlay() override;
-
-	UPROPERTY(EditAnywhere, Category = "Item")
-	TObjectPtr<USkeletalMeshComponent> HoldItem;
+	virtual void BeginPlay() override;	
 
 };
